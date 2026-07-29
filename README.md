@@ -17,6 +17,14 @@ Planning and initial setup.
 - [Development Roadmap](#development-roadmap)
 - [Security](#security)
 
+## Documentation
+
+- [Vision](docs/Vision.md)
+- [Architecture](docs/Architecture.md)
+- [Agent Definition](docs/AgentDefinition.md)
+- [Data Model](docs/DataModel.md)
+- [Roadmap](docs/Roadmap.md)
+
 ## Vision
 
 Build a personal AI job-search agent that:
