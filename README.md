@@ -10,6 +10,7 @@ Planning and initial setup.
 
 - [Vision](#vision)
 - [Core Capabilities](#core-capabilities)
+- [Application Lifecycle Management](#Application-Lifecycle-Management) 
 - [Architecture](#architecture)
 - [Technology Stack](#technology-stack)
 - [Project Structure](#project-structure)
@@ -21,14 +22,14 @@ Planning and initial setup.
 Build a personal AI job-search agent that:
 
 1. Reviews job-alert emails from Gmail.
-2. Extracts job descriptions and posting details.
+2. Extracts job descriptions and posting details (including date it was posted to understand urgency).
 3. Removes duplicate opportunities.
 4. Compares each job against a verified master resume.
-5. Scores and prioritizes jobs by qualification fit.
+5. Scores (consider all jobs I am 85% => qualified for) and prioritizes jobs by qualification fit.
 6. Tailors a resume without fabricating experience.
 7. Generates a Microsoft Word resume.
-8. Sends the job description, evaluation, and resume for approval.
-9. Tracks decisions and application status in PostgreSQL.
+8. Sends the JD (high level summary bullets of the most important pieces of information for the JD, brief about the company, salary) , evaluation, and resume for approval.
+9. Track each application throughout its lifecycle by combining manual status updates with automated monitoring of Gmail responses. The agent will detect recruiter communications (e.g., interview invitations, assessment requests, follow-ups, offers, and rejections), notify the user of meaningful updates, and persist all application activity and status changes in the PostgreSQL DB.
 
 ## Core Capabilities
 
@@ -42,6 +43,18 @@ Build a personal AI job-search agent that:
 - Human approval workflow
 - PostgreSQL job tracking
 - Agent-run logging
+
+## Application Lifecycle Management
+
+- Track every submitted application
+- Monitor Gmail for recruiter responses
+- Detect interviews
+- Detect assessment requests
+- Detect offers
+- Detect rejections
+- Recommend follow-ups
+- Notify the user of important updates
+- Persist application history in PostgreSQL
 
 ## Architecture
 
