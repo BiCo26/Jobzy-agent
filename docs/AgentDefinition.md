@@ -125,6 +125,9 @@ Examples include:
 - Match summary
 - Extracted job metadata
 - Salary information
+- Legitimacy assessment
+- Scam risk assessment
+- Ghost job likelihood score
 - Recommendation
 
 ### Tools
@@ -137,6 +140,27 @@ Examples include:
 - Does not modify resumes.
 - Does not submit applications.
 - Does not change user preferences.
+
+### Legitimacy Assessment
+
+The Recruiter Agent evaluates each opportunity for signals that may indicate the posting is fraudulent, low quality, or unlikely to result in an actual hire.
+
+Examples include:
+
+- Company verification
+- Company website consistency
+- Recruiter legitimacy
+- Unrealistic compensation
+- Vague or incomplete job descriptions
+- Excessive reposting frequency
+- Posting age
+- Duplicate postings across platforms
+- Missing hiring manager information (when expected)
+- Requests for payment or sensitive personal information
+- Inconsistent company branding
+- Indicators commonly associated with ghost job postings
+
+The agent assigns a confidence score and includes an explanation for any concerns in the approval package.
 
 ---
 
