@@ -1,7 +1,4 @@
-# Architecture
-
-This document describes the architecture of Jobzy-Agent.
-
+# Jobzy-Agent Architecture
 
 ## Overview
 
@@ -250,5 +247,23 @@ Career Intelligence
 
 - Single Responsibility Principle
 - Modular architecture
-- AI agents
-```
+- AI agents are replaceable
+- Database-first design
+- Configuration over hardcoding
+- Human-in-the-loop decision making
+- Explainable AI recommendations
+
+---
+
+# Future Architecture
+
+Future releases may include:
+
+- Browser automation
+- ATS integrations
+- API integrations
+- Interview preparation
+- Salary negotiation assistant
+- Multi-model AI support
+- Voice interaction
+- Mobile companion application
