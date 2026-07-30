@@ -4,21 +4,17 @@ This document defines the responsibilities, boundaries, and interactions of the 
 
 Jobzy-Agent is a multi-agent AI system that assists with every stage of the job search while keeping the user in control of final decisions.
 
-```text
+```
                               Jobzy-Agent
                                    │
                         AI Agent Orchestrator
                                    │
- ┌────────────────┬────────────────┬──────────────────┬──────────────────────┬────────────────────┐
- │                │                │                  │                      │
-Recruiter     Resume Writer   Application Manager   Career Intelligence   Company Research
-  Agent           Agent             Agent                 Agent               Agent
-                                   │
-                                   │
-                         Preference Learning
-                                Agent (Future)
+ ┌──────────────┬──────────────┬──────────────┬──────────────┬──────────────┬──────────────┐
+ │              │              │              │              │              │
+Recruiter   Resume Writer   Application     Career        Company       Preference
+  Agent         Agent       Manager Agent  Intelligence   Research       Learning
+                                             Agent          Agent       Agent (Future)
 ```
-
 ---
 
 # AI Agent Orchestrator
@@ -116,8 +112,13 @@ Examples include:
 ### Inputs
 
 - Job description
+- Job posting URL
+- Company name
+- Recruiter name and contact information, when available
+- Sender email address and email domain
 - Master resume
 - User Preference Profile
+- Existing job and company records
 
 ### Outputs
 
@@ -125,21 +126,37 @@ Examples include:
 - Match summary
 - Extracted job metadata
 - Salary information
-- Legitimacy assessment
+- Legitimacy score
 - Scam risk assessment
-- Ghost job likelihood score
+- Ghost job likelihood
+- Confidence level
+- Verified facts
+- Risk signals
+- Conflicting evidence
+- Unverified information
+- Sources consulted
+- Explanation of findings
 - Recommendation
 
 ### Tools
 
 - AI Model Provider
 - PostgreSQL
-
+- Web search or research provider
+- Company website verification
+- URL and domain verification service
+- Trusted ATS verification
+- Scam and reputation data sources
+  
 ### Boundaries
 
 - Does not modify resumes.
 - Does not submit applications.
 - Does not change user preferences.
+- Does not classify a posting as confirmed fraud based on one weak signal.
+- Does not treat missing information as proof of fraud.
+- Does not present assumptions as verified facts.
+- Escalates conflicting or high-risk findings for manual review.
 
 ### Legitimacy Assessment
 
@@ -464,14 +481,16 @@ The agent maintains two types of preferences.
 # Agent Interaction Flow
 
 1. Gmail receives a new job opportunity.
-2. The AI Agent Orchestrator creates a workflow.
-3. The Recruiter Agent evaluates the opportunity.
-4. Duplicate or low-quality jobs are filtered.
-5. Qualified jobs are sent to the Resume Writer Agent.
-6. The Resume Writer Agent generates a tailored resume.
-7. The Company Research Agent gathers company information.
-8. The Application Manager Agent creates an application record.
-9. The user receives an approval package.
-10. The user approves or rejects the recommendation.
-11. The Career Intelligence Agent updates analytics.
-12. The Preference Learning Agent records the decision to improve future recommendations.
+2. The AI Agent Orchestrator creates a workflow record.
+3. The Recruiter Agent extracts the job information and checks for duplicates.
+4. The Recruiter Agent evaluates qualification fit.
+5. The Recruiter Agent performs the legitimacy, scam-risk, and ghost-job assessment.
+6. The Company Research Agent gathers supporting company information.
+7. Suspicious, duplicate, or low-quality jobs are rejected or escalated for manual review.
+8. Qualified and credible jobs are sent to the Resume Writer Agent.
+9. The Resume Writer Agent generates a tailored resume.
+10. The Application Manager Agent creates an application record.
+11. The user receives an approval package with the resume, match analysis, company research, and legitimacy evidence.
+12. The user approves or rejects the opportunity.
+13. The Career Intelligence Agent updates performance analytics.
+14. The Preference Learning Agent records the decision for future preference analysis.
