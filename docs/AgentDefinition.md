@@ -82,7 +82,6 @@ Coordinate the end-to-end Jobzy-Agent workflow by assigning work to specialized 
 Analyze incoming job opportunities and determine how well they match the user's experience and career goals.
 
 ### Responsibilities
-
 - Parse job descriptions.
 - Extract job title.
 - Extract company name.
@@ -95,14 +94,16 @@ Analyze incoming job opportunities and determine how well they match the user's 
 - Calculate a qualification score.
 - Identify strengths and experience gaps.
 - Detect duplicate job postings.
+- Assess the legitimacy of the job posting.
+- Identify potential job scams and fraudulent recruiting patterns.
+- Detect characteristics commonly associated with ghost job postings.
+- Assign a confidence score indicating the likelihood that the posting represents a legitimate hiring opportunity.
 - Recommend Apply, Review, or Reject.
 
 ### Evaluation Criteria
-
 The Recruiter Agent evaluates opportunities using the User Preference Profile.
 
 Examples include:
-
 - Minimum salary
 - Target salary range
 - Preferred job titles
