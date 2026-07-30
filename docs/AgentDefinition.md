@@ -143,24 +143,71 @@ Examples include:
 
 ### Legitimacy Assessment
 
-The Recruiter Agent evaluates each opportunity for signals that may indicate the posting is fraudulent, low quality, or unlikely to result in an actual hire.
+The Recruiter Agent evaluates each opportunity using both the job posting itself and external data sources to determine whether the opportunity appears legitimate.
 
-Examples include:
+The assessment includes:
 
-- Company verification
-- Company website consistency
-- Recruiter legitimacy
-- Unrealistic compensation
-- Vague or incomplete job descriptions
-- Excessive reposting frequency
-- Posting age
-- Duplicate postings across platforms
-- Missing hiring manager information (when expected)
+#### Job Posting Analysis
+- Unrealistic salary or benefits
+- Vague or generic job descriptions
+- Poor grammar or inconsistent formatting
 - Requests for payment or sensitive personal information
-- Inconsistent company branding
-- Indicators commonly associated with ghost job postings
+- Suspicious urgency or hiring language
 
-The agent assigns a confidence score and includes an explanation for any concerns in the approval package.
+#### Company Verification
+- Verify the company's official website.
+- Verify the company's LinkedIn page.
+- Confirm the company is an active business.
+- Compare branding between the job posting and official company sources.
+
+#### URL Verification
+- Verify the application URL belongs to the company or a trusted ATS.
+- Detect suspicious domains, redirects, or typosquatting.
+- Flag newly registered or unusual domains when available.
+
+#### Reputation Analysis
+- Search for known scam reports involving:
+  - Company name
+  - Recruiter name
+  - Email domain
+  - Application URL
+- Search for reports of fraudulent recruiting activity.
+
+#### Ghost Job Detection
+Evaluate indicators such as:
+
+- Job repeatedly reposted over an extended period.
+- Posting remains open for unusually long durations.
+- Multiple duplicate listings across platforms.
+- Historical evidence suggesting the role is not actively being filled.
+
+#### Confidence Assessment
+
+Generate:
+
+- Legitimacy Score (0–100)
+- Scam Risk (Low, Medium, High)
+- Ghost Job Likelihood (Low, Medium, High)
+- Explanation of findings
+
+### Evidence and Explainability Requirements
+
+The Recruiter Agent must support every legitimacy assessment with observable evidence.
+
+For each assessment, the agent must:
+
+- Record each source used during verification.
+- Capture the source URL when available.
+- Record the date and time the source was checked.
+- Separate verified facts from assumptions or weak signals.
+- Explain how each signal affected the legitimacy score.
+- Identify conflicting evidence.
+- State when information could not be verified.
+- Avoid labeling a job as fraudulent based on a single weak signal.
+- Provide citations or source references in the approval package.
+- Assign confidence based on the quality and consistency of the evidence.
+
+The agent must not produce a legitimacy conclusion without an evidence summary.
 
 ---
 
