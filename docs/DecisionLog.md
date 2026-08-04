@@ -38,3 +38,34 @@ The `v0.1.0` release represents the project foundation. It is not a functional M
 - Future work can reference `v0.1.0` as the documented project baseline.
 - Subsequent changes will build on a stable, versioned foundation.
 - Functional workflows and application features will be delivered in later versions.
+
+
+---
+
+
+---
+
+## 2026-08-04 — Complete the Logical Data Model
+
+### Status
+
+Accepted
+
+### Context
+
+The `v0.1.0` Foundation release identified the data model as complete. A later review found that `docs/DataModel.md` still contained only a placeholder outline.
+
+The published `v0.1.0` tag is an immutable historical snapshot and should not be moved or rewritten.
+
+### Decision
+
+Complete the conceptual and logical data model in a new commit after `v0.1.0`.
+
+The completed model defines entities, relationships, keys, constraints, indexing, historical integrity, privacy, schema evolution, and preference handling.
+
+### Consequences
+
+- The historical `v0.1.0` release remains unchanged.
+- The repository transparently records and corrects the documentation gap.
+- PostgreSQL implementation will use the completed model as its blueprint.
+- A patch release may be created after the correction is merged.
