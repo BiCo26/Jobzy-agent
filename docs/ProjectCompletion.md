@@ -1,20 +1,30 @@
 ## Current Project Progress
 
-**Estimated MVP completion: 35%**
+**Estimated MVP completion: 40%**
 
 | Workstream | Completion | Status |
 |---|---:|---|
-| Product and design documentation | 90% | Nearly complete |
 | Local development environment | 100% | Complete |
-| Database design | 90% | Nearly complete |
-| Database implementation | 35% | In progress |
+| Product and design documentation | 100% | Complete |
+| Database design | 95% | Nearly complete |
+| Database implementation | 55% | In progress |
+| AI job evaluation | 10% | Database foundation created |
+| Resume tailoring and DOCX generation | 10% | Version storage created |
 | Job intake through n8n | 10% | Started |
-| AI job evaluation | 5% | Planned |
 | Resume tailoring and DOCX generation | 5% | Planned |
 | User approval package | 0% | Not started |
 | Gmail application tracking | 0% | Not started |
 | Career intelligence | 0% | Future phase |
 | Application automation | 0% | Future phase |
+
+## Latest Completed Work
+
+- Completed and merged the Product Requirements Document.
+- Added migration `005_resume_versions.sql`.
+- Added versioned resume storage and parent-version relationships.
+- Added migration `006_job_evaluations.sql`.
+- Added qualification and legitimacy evaluation storage.
+- Added scam-risk, ghost-job likelihood, and verification-evidence storage.
 
 ## Remaining MVP Milestones
 
