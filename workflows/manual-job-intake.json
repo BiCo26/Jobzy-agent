@@ -1,0 +1,156 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Submit a Job to Jobzy",
+        "formDescription": "Paste a job description for qualification, legitimacy, and resume evaluation.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Job Posting URL",
+              "placeholder": "https://company.com/jobs/example-role"
+            },
+            {
+              "fieldLabel": "Job Description",
+              "fieldType": "textarea",
+              "placeholder": "Paste the complete job description here.",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Date Posted",
+              "fieldType": "date"
+            },
+            {
+              "fieldLabel": "Job Title",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Company Name",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "87fffd5d-024f-49c3-b499-118582ab3ac4",
+      "name": "On form submission",
+      "webhookId": "000f0e10-af45-440a-b4b1-d5d42e7ca8e7"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2fbbdd04-acf9-49c5-9e17-b329e17d864e",
+              "name": "posting_url",
+              "value": "={{ $json[\"Job Posting URL\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "704844b0-a3de-4ef8-99ce-5c4e32aa4a82",
+              "name": "description",
+              "value": "={{ $json[\"Job Description\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "da01331d-ed16-40ef-99ae-5c83176dd66c",
+              "name": "posted_date",
+              "value": "={{ $json[\"Date Posted\"] || null }}",
+              "type": "string"
+            },
+            {
+              "id": "6974ce83-abb2-4cf4-94c3-c432296e22b3",
+              "name": "title",
+              "value": "={{ $json[\"Job Title\"] || null }}",
+              "type": "string"
+            },
+            {
+              "id": "aedb849f-2086-41f2-bc66-04e740fc0531",
+              "name": "company_name",
+              "value": "={{ $json[\"Company Name\"] || null }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        208,
+        0
+      ],
+      "id": "de457085-c672-49ff-80f2-1c14fb7e94cb",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH existing_company AS (\n    SELECT id\n    FROM companies\n    WHERE normalized_name = lower(trim($1::text))\n    ORDER BY created_at\n    LIMIT 1\n),\nnew_company AS (\n    INSERT INTO companies (display_name, normalized_name)\n    SELECT trim($1::text), lower(trim($1::text))\n    WHERE NOT EXISTS (SELECT 1 FROM existing_company)\n    RETURNING id\n),\nselected_company AS (\n    SELECT id FROM existing_company\n    UNION ALL\n    SELECT id FROM new_company\n    LIMIT 1\n),\nsaved_job AS (\n    INSERT INTO jobs (\n        company_id,\n        title,\n        normalized_title,\n        description,\n        canonical_url,\n        posted_at,\n        description_hash\n    )\n    SELECT\n        id,\n        trim($2::text),\n        lower(trim($2::text)),\n        trim($3::text),\n        nullif(trim($4::text), ''),\n        nullif($5::text, '')::timestamptz,\n        md5(trim($3::text))\n    FROM selected_company\n    ON CONFLICT (canonical_url)\n        WHERE canonical_url IS NOT NULL\n    DO UPDATE SET\n        last_seen_at = now(),\n        posted_at = coalesce(EXCLUDED.posted_at, jobs.posted_at)\n    RETURNING id, company_id, title, created_at\n),\nsaved_source AS (\n    INSERT INTO job_sources (\n        job_id,\n        source_type,\n        source_reference,\n        source_url,\n        source_posted_at,\n        raw_content_hash\n    )\n    SELECT\n        id,\n        'manual_paste',\n        coalesce(nullif(trim($4::text), ''), 'manual:' || id::text),\n        nullif(trim($4::text), ''),\n        nullif($5::text, '')::timestamptz,\n        md5(trim($3::text))\n    FROM saved_job\n    ON CONFLICT (source_type, source_reference)\n    DO UPDATE SET\n        received_at = now(),\n        source_posted_at = coalesce(\n            EXCLUDED.source_posted_at,\n            job_sources.source_posted_at\n        )\n    RETURNING id, job_id\n)\nSELECT\n    saved_job.id AS job_id,\n    saved_job.company_id,\n    saved_source.id AS job_source_id,\n    saved_job.title,\n    saved_job.created_at\nFROM saved_job\nJOIN saved_source ON saved_source.job_id = saved_job.id;",
+        "options": {
+          "queryReplacement": "={{ [\n  $json.company_name,\n  $json.title,\n  $json.description,\n  $json.posting_url || '',\n  $json.posted_date || ''\n] }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        416,
+        0
+      ],
+      "id": "9bdf0dd0-7f1a-41d0-bb15-ef4458ba5f74",
+      "name": "Save Job to PostgreSQL",
+      "credentials": {
+        "postgres": {
+          "id": "np9u9OJW1lr8ay5c",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Save Job to PostgreSQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "c5668870-0ad4-4910-ba04-87b485218a2d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "35178a86f7cee7aeac6307dc322c93d225da3a113f5d2e7b3da22dcfeec3a435"
+  },
+  "nodeGroups": [],
+  "id": "qaHNVHo4fgaSCJbR",
+  "tags": []
+}
