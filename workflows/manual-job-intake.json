@@ -105,13 +105,7 @@
         0
       ],
       "id": "9bdf0dd0-7f1a-41d0-bb15-ef4458ba5f74",
-      "name": "Save Job to PostgreSQL",
-      "credentials": {
-        "postgres": {
-          "id": "np9u9OJW1lr8ay5c",
-          "name": "Postgres account"
-        }
-      }
+      "name": "Save Job to PostgreSQL"
     },
     {
       "parameters": {
@@ -138,13 +132,7 @@
         0
       ],
       "id": "364b2ad2-2e0c-4aeb-bfcf-5845651d931f",
-      "name": "Message a model",
-      "credentials": {
-        "openAiApi": {
-          "id": "xeXNVVARtXOBdQp8",
-          "name": "OpenAI account"
-        }
-      }
+      "name": "Message a model"
     },
     {
       "parameters": {
