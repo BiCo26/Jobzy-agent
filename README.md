@@ -1,5 +1,7 @@
 # Jobzy-Agent
 
+![Jobzy-Agent — AI Job Search Assistant](assets/social-preview/JobzyLogo.png)
+
 Jobzy-Agent is a human-in-the-loop AI career assistant that turns job postings into structured, explainable application recommendations. Its goal is to evaluate qualification fit, prioritize credible opportunities, tailor resumes using verified experience only, and prepare each result for user approval.
 
 > **Status:** Active MVP development. The manual job-intake and AI extraction pipeline works locally. Google Drive authentication, master-resume retrieval, and PDF text extraction have also been tested successfully. Qualification scoring and resume tailoring are the next capabilities in development.
