@@ -1,5 +1,5 @@
 {
-  "name": "Manual-job-intake",
+  "name": "My workflow",
   "nodes": [
     {
       "parameters": {
@@ -128,15 +128,15 @@
       ],
       "id": "879fa05f-51aa-49a9-87f0-ba94b1674077",
       "name": "Parse AI Response"
-        },
+    },
     {
       "parameters": {
-  "operation": "download",
-  "fileId": {
-    "__rl": true,
-    "value": "REPLACE_WITH_YOUR_RESUME_FILE_ID",
-    "mode": "id"
-  },
+        "operation": "download",
+        "fileId": {
+  "__rl": true,
+  "value": "REPLACE_WITH_YOUR_RESUME_FILE_ID",
+  "mode": "id"
+},
         "options": {}
       },
       "type": "n8n-nodes-base.googleDrive",
@@ -211,6 +211,29 @@
         "openAiApi": {
           "id": "xeXNVVARtXOBdQp8",
           "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Save a new evaluation without overwriting previous results.\nINSERT INTO job_evaluations (\n    job_id,\n    user_id,\n    qualification_score,\n    confidence_level,\n    recommendation,\n    strengths,\n    gaps,\n    explanation,\n    model_version,\n    prompt_version,\n    evaluation_details\n)\nVALUES (\n    $1::uuid,                              -- Job being evaluated.\n    $2::uuid,                              -- Your Jobzy user record.\n    ($3::jsonb ->> 'qualification_score')::numeric,\n    $3::jsonb ->> 'confidence_level',\n    $3::jsonb ->> 'recommendation',\n    $3::jsonb -> 'matching_qualifications',\n    $3::jsonb -> 'qualification_gaps',\n    $3::jsonb ->> 'summary',\n    $4::text,                              -- Model used.\n    $5::text,                              -- Evaluation prompt version.\n    $3::jsonb                              -- Complete parsed evaluation.\n)\n-- Show confirmation of the saved evaluation.\nRETURNING\n    id AS evaluation_id,\n    job_id,\n    qualification_score,\n    recommendation,\n    evaluated_at;",
+        "options": {
+          "queryReplacement": "={{ [\n  $(\"Save Job to PostgreSQL\").item.json.job_id,\n  \"REPLACE_WITH_YOUR_JOBZY_USER_ID\",\n  JSON.stringify($json.job_fit_evaluation),\n  \"gpt-5.4-mini\",\n  \"job-fit-v1\"\n] }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        208,
+        512
+      ],
+      "id": "e705a6f6-c681-4923-8088-33743dcdaee0",
+      "name": "Save Job Fit Evaluation",
+      "credentials": {
+        "postgres": {
+          "id": "np9u9OJW1lr8ay5c",
+          "name": "Postgres account"
         }
       }
     }
@@ -304,6 +327,17 @@
           }
         ]
       ]
+    },
+    "Parse Job Fit Evaluation": {
+      "main": [
+        [
+          {
+            "node": "Save Job Fit Evaluation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -312,7 +346,7 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "50e16e77-8aee-459e-be30-b818940f0507",
+  "versionId": "c69eef3b-caee-43aa-b53b-eeb5fb4fe12d",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "35178a86f7cee7aeac6307dc322c93d225da3a113f5d2e7b3da22dcfeec3a435"
